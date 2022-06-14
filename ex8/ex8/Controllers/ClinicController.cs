@@ -1,4 +1,5 @@
-﻿using ex8.Services;
+﻿using ex8.DTOs;
+using ex8.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,22 +9,46 @@ using System.Threading.Tasks;
 
 namespace ex8.Controllers
 {
-    
+
     [ApiController]
     [Route("api/")]
     public class ClinicController : ControllerBase
     {
-        private readonly DbService _dbService;
+        private readonly IDbService _dbService;
 
         public ClinicController(DbService dbService)
         {
             _dbService = dbService;
         }
 
-        [HttpGet("doctor/{idDoctor}")]
-        public IActionResult GetDoctors(int idDoctor)
+        [HttpGet("doctors")]
+        public async Task<IActionResult> GetDoctor()
         {
-            return Ok(_dbService.GetDoctor(idDoctor));
+            return await _dbService.GetDoctors();
+        }
+
+        [HttpPost("doctor")]
+        public async Task<IActionResult> AddDoctor(AddDoctorRequest addDoctorRequest)
+        {
+            return await _dbService.AddDoctor(addDoctorRequest);
+        }
+
+        [HttpDelete("doctor/{idDoctor}")]
+        public async Task<IActionResult> DeleteDoctor(int idDoctor)
+        {
+            return await _dbService.DeleteDoctor(idDoctor);
+        }
+
+        [HttpPut("doctor/{idDoctor")]
+        public async Task<IActionResult> UpdateDoctor(ModifyDoctorRequest modifyDoctorRequest)
+        {
+            return await _dbService.ModifyDoctor(modifyDoctorRequest);
+        }
+
+        [HttpGet("prescription")]
+        public async Task<IActionResult> GetPrescription(DownloadPrescriptionRequest downloadPrescriptionRequest)
+        {
+            return await _dbService.GetPrescription(downloadPrescriptionRequest);
         }
     }
 }

@@ -31,13 +31,14 @@ namespace ex8
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MainDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
-            services.AddTransient<IDbService, DbService>();
+            services.AddScoped<IDbService, DbService>();
             services.AddControllers().AddJsonOptions(conf =>
             {
                 conf.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             services.AddSwaggerGen(c =>
             {
+
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ex8", Version = "v1" });
             });
         }
